@@ -1,0 +1,22 @@
+{
+	"name": "oan/wordpress",
+	"description": "Wordpress helpers",
+	"type": "library",
+	"homepage": "https://github.com/johanhermansson/Wordpress-Helpers",
+	"license": "Unlicense",
+	"authors": [
+		{
+			"name": "Johan Hermansson",
+			"email": "johan@johanhermansson.se"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"OAN\\Wordpress\\": "src/"
+		}
+	},
+	"require": {
+		"php": ">=7.1",
+		"oan/helpers": "^0.0.1"
+	}
+}
