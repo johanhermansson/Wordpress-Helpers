@@ -139,14 +139,14 @@ trait Hooks {
 	/**
 	 * Add single action
 	 *
-	 * @param string $callback
 	 * @param string $hook
+	 * @param string $callback
 	 * @param integer $priority
 	 * @param integer $arguments
 	 * @return instance
 	 */
-	final public function add_action( $callback = '', $hook = '', $priority = 10, $arguments = 2 ) {
-		return $this->add_hook( 'action', $callback, $hook, $priority, $arguments );
+	final public function add_action( $hook = '', $callback = '', $priority = 10, $arguments = 2 ) {
+		return $this->add_hook( 'action', $hook, $callback, $priority, $arguments );
 	}
 
 	/**
@@ -172,14 +172,14 @@ trait Hooks {
 	/**
 	 * Add single filter
 	 *
-	 * @param string $callback
 	 * @param string $hook
+	 * @param string $callback
 	 * @param integer $priority
 	 * @param integer $arguments
 	 * @return instance
 	 */
-	final public function add_filter( $callback = '', $hook = '', $priority = 10, $arguments = 2 ) {
-		return $this->add_hook( 'filter', $callback, $hook, $priority, $arguments );
+	final public function add_filter( $hook = '', $callback = '', $priority = 10, $arguments = 2 ) {
+		return $this->add_hook( 'filter', $hook, $callback, $priority, $arguments );
 	}
 
 	/**
