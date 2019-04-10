@@ -5,7 +5,7 @@ A collection of abstract PHP classes to work easier with WordPress themes with C
 ## Installation
 
 ```
-composer require oan/wordpress
+composer require oan/wordpress-helpers
 ```
 
 ## AbstractTheme
