@@ -1,6 +1,6 @@
 {
-	"name": "oan/wordpress",
-	"description": "Wordpress helpers",
+	"name": "oan/wordpress-helpers",
+	"description": "A collection of abstract PHP classes to work easier with WordPress themes using Composer.",
 	"type": "library",
 	"homepage": "https://github.com/johanhermansson/Wordpress-Helpers",
 	"license": "Unlicense",
