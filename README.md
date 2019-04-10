@@ -30,18 +30,23 @@ class MyTheme extends AbstractTheme {
 }
 
 MyTheme::instance()
+
 	// Add filters and actions use self for static methods
 	->add_filter( 'the_content', 'self::awesome_static_function' )
-	// And this for normal methods
-	// (chaining works great)
+
+	// And this for normal methods (chaining works great btw)
 	->add_filter( 'the_content', 'this::awesome_function' )
+
 	// Or other classes
 	->add_action( 'save_post', 'MyAwesomeClass::my_awesome_method' )
 	->add_action( 'save_post', [ $awesomeClassInstance, 'my_awesome_method' ] )
+
 	// Add nav menus
 	->add_menu( 'main', __( 'Main menu', 'my-theme' ) )
+
 	// Add sidebars
 	->add_sidebar( 'default-sidebar', __( 'Default sidebar', 'my-theme' ) )
+
 	// Add widgets by adding the global class name
 	->add_widget( 'MyThemeWidget' );
 ```
