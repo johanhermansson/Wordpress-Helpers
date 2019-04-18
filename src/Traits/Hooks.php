@@ -1,4 +1,4 @@
-<?php namespace OAN\WordPress\Traits;
+<?php namespace OAN\Wordpress\Traits;
 
 use OAN\Helpers\Callback;
 
@@ -9,17 +9,25 @@ trait Hooks {
 		$this->initialize_hooks( 'action' );
 	}
 
+	/**
+	 * Initialize hooks
+	 *
+	 * @param string $type action or filter
+	 * @return void
+	 */
 	private function initialize_hooks( $type = 'action' ) {
 		$instance = &$this;
 		$property = "{$type}s";
 		$getter   = "get_{$property}";
 		$setter   = "add_{$type}";
 
-		if ( ! isset( $this->{$property} ) or ! is_array( $this->{$property} ) ) {
-			return;
+		$hooks = $this->{$getter}();
+
+		if ( empty( $hooks ) or ! is_array( $hooks ) ) {
+			$hooks = [];
 		}
 
-		foreach ( $this->{$getter}( $this->{$property} ) as $item ) {
+		foreach ( $hooks as $item ) {
 			if ( is_array( $item ) and count( array_filter( array_keys( $item ), 'is_string') ) > 0 ) {
 				$item['callback'] = Callback::get( $item['callback'], $instance );
 
@@ -85,19 +93,19 @@ trait Hooks {
 	final public function add_hook( $type = '', $hook = '', $callback, $priority = 10, $arguments = 2 ) {
 		$property = "{$type}s";
 
-		if ( ! isset( $this->{$property} ) ) {
+		if ( ! isset( static::$$property ) ) {
 			return $this;
 		}
 
-		if ( ! is_array( $this->{$property} ) ) {
-			$this->{$property} = [];
+		if ( ! is_array( static::$$property ) ) {
+			static::$$property = [];
 		}
 
 		if ( ! empty( $hook ) and empty( $callback ) ) {
 			// When callback and hook has the same name
-			$this->{$property}[] = $hook;
+			static::$$property[] = $hook;
 		} else if ( ! empty( $hook ) and ! empty( $callback ) ) {
-			$this->{$property}[] = [
+			static::$$property[] = [
 				'arguments' => $arguments,
 				'callback'  => $callback,
 				'hook'      => $hook,
@@ -160,25 +168,30 @@ trait Hooks {
 	}
 
 	/**
-	 * Get actions
+	 * Get all actions
 	 *
-	 * @param array $actions
 	 * @return array
 	 */
-	public function get_actions() {
-		return $this->actions;
+	final public function get_actions() {
+		$actions = self::$actions ?: [];
+
+		if ( isset( static::$actions ) and static::$actions !== self::$actions ) {
+			$actions = array_merge( $actions, static::$actions );
+		}
+
+		return $actions;
 	}
 
 	/**
 	 * Add single filter
 	 *
 	 * @param string $hook
-	 * @param string $callback
+	 * @param string|callable $callback
 	 * @param integer $priority
 	 * @param integer $arguments
 	 * @return instance
 	 */
-	final public function add_filter( $hook = '', $callback = '', $priority = 10, $arguments = 2 ) {
+	final public function add_filter( $hook = '', $callback, $priority = 10, $arguments = 2 ) {
 		return $this->add_hook( 'filter', $hook, $callback, $priority, $arguments );
 	}
 
@@ -193,12 +206,18 @@ trait Hooks {
 	}
 
 	/**
-	 * Get filters
+	 * Get all filters
 	 *
 	 * @return array
 	 */
-	public function get_filters() {
-		return $this->filters;
+	final public function get_filters() {
+		$filters = self::$filters ?: [];
+
+		if ( isset( static::$filters ) and static::$filters !== self::$filters ) {
+			$filters = array_merge( $filters, static::$filters );
+		}
+
+		return $filters;
 	}
 
 }
