@@ -20,6 +20,62 @@ By default the AbstractTheme will remove som functionality without you setting i
 use OAN\Wordpress\AbstractTheme;
 
 class MyTheme extends AbstractTheme {
+	protected static $styles = [
+		// Handle will be generated from Theme name
+		'style.css',
+		// Or pass wp_enqueue_style parameters as an array
+		[ 'my-theme-style', 'dist/css/another-style.css' ]
+	];
+
+	protected static $scripts = [
+		// Handle will be generated from Theme name
+		'script.js',
+		// Or pass wp_enqueue_script arguments as an array
+		[ 'my-theme-scripts', 'dist/js/scripts.js' ]
+	];
+
+	protected static $actions = [
+		// Will look for method within instance
+		// with the same name as action
+		'init',
+		// Pass add_action arguments as an array
+		[ 'init', 'this::init', 10, 0 ],
+	];
+
+	protected static $filters = [
+		// Will look for method within instance
+		// with the same name as action
+		'the_content',
+		// Pass add_action arguments as an array
+		[ 'the_content', 'this::the_content', 10, 1 ],
+	];
+
+	protected static $menus = [
+		'main-menu' => __( 'Main menu', 'my-theme' ),
+	];
+
+	protected static $sidebars = [
+		'second-sidebar' => __( 'Second sidebar', 'my-theme' ),
+	];
+
+	protected static $widgets = [
+		// Activate
+		'MyWidgetClass',
+		// Deactivate, but won't work because of the line above
+		'MyWidgetClass' => false,
+		// Deactivate
+		'Namespace\AnotherWidgetClass' => false,
+	];
+
+	public function init() {
+		// Do awesome stuff
+	}
+
+	public function the_content( $content = '' ) {
+		// Do awesome stuff
+		return $content;
+	}
+
 	public static function awesome_static_function( $content = '' ) {
 		// Do awesome stuff
 		return $content;
@@ -45,10 +101,10 @@ MyTheme::instance()
 ->add_action( 'save_post', [ $awesomeClassInstance, 'my_awesome_method' ] )
 
 // Add nav menus
-->add_menu( 'main', __( 'Main menu', 'my-theme' ) )
+->add_menu( 'footer-menu', __( 'Footer menu', 'my-theme' ) )
 
 // Add sidebars
-->add_sidebar( 'default-sidebar', __( 'Default sidebar', 'my-theme' ) )
+->add_sidebar( 'second-sidebar', __( 'Second sidebar', 'my-theme' ) )
 
 // Add widgets by adding the global class name
 ->add_widget( 'MyThemeWidget' )
@@ -76,7 +132,7 @@ class MyClass {
 	}
 
 	protected $actions = [
-		// Eact item in the array will be sent
+		// Each item in the array will be sent
 		// to the ->add_action() method
 		[ 'after_setup_theme', 'this::my_awesome_function' ],
 		// Priority and number of arguments
@@ -95,3 +151,10 @@ class MyClass {
 	}
 }
 ```
+
+## Future plans
+
+-   AbstractPostType
+-   AbstractTaxonomy
+-   Handling of manifest.json
+-   ... and probably a lot more

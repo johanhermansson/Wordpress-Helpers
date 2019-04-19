@@ -17,6 +17,6 @@
 	},
 	"require": {
 		"php": ">=7.1",
-		"oan/helpers": "^0.0.1"
+		"oan/helpers": "^0.0.2"
 	}
 }
