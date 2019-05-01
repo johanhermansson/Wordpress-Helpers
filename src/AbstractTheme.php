@@ -8,6 +8,7 @@ abstract class AbstractTheme extends Singleton {
 		Traits\Hooks::__construct as hooks_construct;
 	}
 
+	use Traits\Manifest;
 	use Traits\Menus;
 	use Traits\Sidebars;
 	use Traits\Scripts;
