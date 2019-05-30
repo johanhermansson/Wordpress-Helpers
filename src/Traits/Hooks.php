@@ -173,7 +173,7 @@ trait Hooks {
 	 * @return array
 	 */
 	final public function get_actions() {
-		$actions = self::$actions ?: [];
+		$actions = empty( self::$actions ) ? [] : self::$actions;
 
 		if ( isset( static::$actions ) and static::$actions !== self::$actions ) {
 			$actions = array_merge( $actions, static::$actions );
@@ -211,7 +211,7 @@ trait Hooks {
 	 * @return array
 	 */
 	final public function get_filters() {
-		$filters = self::$filters ?: [];
+		$filters = empty( self::$filters ) ? [] : self::$filters;
 
 		if ( isset( static::$filters ) and static::$filters !== self::$filters ) {
 			$filters = array_merge( $filters, static::$filters );

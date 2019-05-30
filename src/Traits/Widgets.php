@@ -51,7 +51,7 @@ trait Widgets {
 	 * @return void
 	 */
 	final public function get_widgets() {
-		$widgets = self::$widgets ?: [];
+		$widgets = empty( self::$widgets ) ? [] : self::$widgets;
 
 		if ( static::$widgets and static::$widgets !== self::$widgets ) {
 			$widgets = array_merge( $widgets, static::$widgets ?: [] );

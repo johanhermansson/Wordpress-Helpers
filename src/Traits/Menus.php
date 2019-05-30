@@ -42,7 +42,7 @@ trait Menus {
 	 * @return array
 	 */
 	final public function get_menus() {
-		$menus = self::$menus ?: [];
+		$menus = empty( self::$menus ) ? [] : self::$menus;
 
 		if ( static::$menus and static::$menus !== self::$menus ) {
 			$menus = array_merge( $menus, static::$menus ?: [] );

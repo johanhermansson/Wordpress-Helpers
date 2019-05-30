@@ -41,7 +41,7 @@ trait Styles {
 	 * @return array
 	 */
 	final public function get_styles() {
-		$styles = self::$styles ?: [];
+		$styles = empty( self::$styles ) ? [] : self::$styles;
 
 		if ( ! empty( static::$styles ) and static::$styles !== self::$styles ) {
 			$styles = array_merge( $styles, static::$styles ?: [] );

@@ -42,7 +42,7 @@ trait Sidebars {
 	 * @return void
 	 */
 	final public function get_sidebars() {
-		$sidebars = self::$sidebars ?: [];
+		$sidebars = empty( self::$sidebars ) ? [] : self::$sidebars;
 
 		if ( static::$sidebars and static::$sidebars !== self::$sidebars ) {
 			$sidebars = array_merge( $sidebars, static::$sidebars ?: [] );

@@ -41,7 +41,7 @@ trait Scripts {
 	 * @return array
 	 */
 	final public function get_scripts() {
-		$scripts = self::$scripts ?: [];
+		$scripts = empty( self::$scripts ) ? [] : self::$scripts;
 
 		if ( ! empty( static::$scripts ) and static::$scripts !== self::$scripts ) {
 			$scripts = array_merge( $scripts, static::$scripts ?: [] );
@@ -59,7 +59,7 @@ trait Scripts {
 			true,                // In footer
 		];
 
-		foreach ( $this->get_scripts() as $script ) {
+		foreach ( $this->get_scripts() as $i => $script ) {
 			if ( is_string( $script ) ) {
 				if ( false === strpos( $script, get_stylesheet_directory_uri() ) ) {
 					$script = get_stylesheet_directory_uri() . '/' . ltrim( $script, '/' );
