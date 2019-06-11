@@ -33,7 +33,7 @@ trait Manifest {
 			return self::$manifest;
 		}
 
-		$path     = apply_filters( 'oan/manifest/path', $this->get_dist_folder() . '/manifest.json' );
+		$path     = apply_filters( 'oan/manifest/path', $this->get_dist_folder( true ) . '/manifest.json' );
 		$contents = apply_filters( 'oan/manifest/contents', @file_get_contents( $path ) );
 		$manifest = apply_filters( 'oan/manifest/transform', (array) json_decode( $contents ) );
 
