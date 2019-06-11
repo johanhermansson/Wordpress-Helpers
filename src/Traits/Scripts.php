@@ -68,8 +68,8 @@ trait Scripts {
 				$script = [ sanitize_title( ( wp_get_theme() )->Name ) . '-script-' . ( $i + 1 ), $script ];
 			}
 
-			if ( ! $script or ! is_array( $script ) ) {
-				$script = [];
+			if ( ! $script or ! is_array( $script ) or empty( $script[1] ) ) {
+				continue;
 			}
 
 			$script = array_replace( $defaults, $script );
