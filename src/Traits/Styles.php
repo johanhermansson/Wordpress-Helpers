@@ -68,8 +68,8 @@ trait Styles {
 				$style = [ sanitize_title( ( wp_get_theme() )->Name ) . '-style-' . ( $i + 1 ), $style ];
 			}
 
-			if ( ! $style or ! is_array( $style ) ) {
-				$style = [];
+			if ( ! $style or ! is_array( $style ) or empty( $style[1] ) ) {
+				continue;
 			}
 
 			$style = array_replace( $defaults, $style );
