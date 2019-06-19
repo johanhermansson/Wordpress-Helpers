@@ -14,12 +14,12 @@ abstract class AbstractBlock extends Singleton {
 	/**
 	 * Initialized or not
 	 */
-	protected static $initialized = false;
+	protected $initialized = false;
 
 	/**
 	 * Registered or not
 	 */
-	protected static $registered = false;
+	protected $registered = false;
 
 	/**
 	 * Arguments sent to acf_register_block_type
@@ -116,8 +116,8 @@ abstract class AbstractBlock extends Singleton {
 	 * @return instance
 	 */
 	final public function initialize( $args = [] ) {
-		if ( static::$initialized ) {
-			return self::instance();
+		if ( $this->initialized ) {
+			return static::instance();
 		}
 
 		if ( empty( $args ) or ! is_array( $args ) ) {
@@ -143,11 +143,11 @@ abstract class AbstractBlock extends Singleton {
 		], $args );
 
 		if ( empty( $args['name'] ) ) {
-			throw new \Exception( 'Name was not found in ' . self::class );
+			throw new \Exception( 'Name was not found in ' . static::class );
 		}
 
 		if ( empty( $args['title'] ) ) {
-			throw new \Exception( 'Title was not found in ' . self::class );
+			throw new \Exception( 'Title was not found in ' . static::class );
 		}
 
 		$args = apply_filters( 'oan/blocks/' . $args['name'] . '/args', $args );
@@ -184,9 +184,9 @@ abstract class AbstractBlock extends Singleton {
 
 		$this->hooks_construct();
 
-		static::$initialized = true;
+		$this->initialized = true;
 
-		return self::instance();
+		return static::instance();
 	}
 
 	/**
@@ -196,15 +196,15 @@ abstract class AbstractBlock extends Singleton {
 	 * @return instance
 	 */
 	final public function register() {
-		if ( static::$registered ) {
-			return self::instance();
+		if ( $this->registered ) {
+			return static::instance();
 		}
 
 		acf_register_block_type( static::$args );
 
-		static::$registered = true;
+		$this->registered = true;
 
-		return self::instance();
+		return static::instance();
 	}
 
 	/**
