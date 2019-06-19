@@ -58,14 +58,19 @@ abstract class AbstractBlock extends Singleton {
 	protected static $mode = null;
 
 	/**
-	 * SCripts for acf_register_block_type
+	 * Scripts for acf_register_block_type
 	 */
-	protected static $scripts = null;
+	protected static $scripts = [];
 
 	/**
 	 * Styles for acf_register_block_type
 	 */
-	protected static $styles = null;
+	protected static $styles = [];
+
+/**
+	 * Enqueue assets for acf_register_block_type
+	 */
+	protected static $enqueue_assets = null;
 
 	/**
 	 * Enqueue style for acf_register_block_type
@@ -97,6 +102,13 @@ abstract class AbstractBlock extends Singleton {
 	];
 
 	/**
+	 * Predefined filters
+	 *
+	 * @var array
+	 */
+	protected static $filters = [];
+
+	/**
 	 * Initialize block
 	 * Prepares arguments for acf_register_block_type
 	 * @param array $args
@@ -123,12 +135,22 @@ abstract class AbstractBlock extends Singleton {
 			'category'        => static::$category,
 			'align'           => static::$align,
 			'mode'            => static::$mode,
-			'enqueue_assets'  => [ &$this, 'enqueue_assets' ],
-			'enqueue_script'  => static::$scripts ?: static::$enqueue_script,
-			'enqueue_style'   => static::$styles ?: static::$enqueue_style,
+			'enqueue_assets'  => static::$enqueue_assets,
+			'enqueue_script'  => static::$enqueue_script,
+			'enqueue_style'   => static::$enqueue_style,
 			'supports'        => static::$supports,
 			'render_callback' => [ &$this, 'render' ],
 		], $args );
+
+		if ( empty( $args['name'] ) ) {
+			throw new \Exception( 'Name was not found in ' . self::class );
+		}
+
+		if ( empty( $args['title'] ) ) {
+			throw new \Exception( 'Title was not found in ' . self::class );
+		}
+
+		$args = apply_filters( 'oan/blocks/' . $args['name'] . '/args', $args );
 
 		if ( ! empty( $args['base_class'] ) and empty( static::$base_class ) ) {
 			static::$base_class = $args['base_class'];
@@ -138,28 +160,24 @@ abstract class AbstractBlock extends Singleton {
 			unset( $args['base_class'] );
 		}
 
-		if ( ! empty( $args['scripts'] ) ) {
-			$args['enqueue_script'] = $args['scripts'];
+		if ( empty( $args['enqueue_script'] ) ) {
+			unset( $args['enqueue_script'] );
 		}
 
-		if ( ! empty( $args['styles'] ) ) {
-			$args['enqueue_style'] = $args['styles'];
-		}
-
-		if ( ! empty( $args['enqueue_script'] ) && ! preg_match( '/^https?:/', $args['enqueue_script'] ) ) {
+		if ( ! empty( $args['enqueue_script'] ) and ! preg_match( '/^https?:/', $args['enqueue_script'] ) ) {
 			$args['enqueue_script'] = get_template_directory_uri() . '/' . ltrim( $args['enqueue_script'], '/' );
 		}
 
-		if ( ! empty( $args['enqueue_style'] ) && ! preg_match( '/^https?:/', $args['enqueue_style'] ) ) {
+		if ( empty( $args['enqueue_style'] ) ) {
+			unset( $args['enqueue_style'] );
+		}
+
+		if ( ! empty( $args['enqueue_style'] ) and ! preg_match( '/^https?:/', $args['enqueue_style'] ) ) {
 			$args['enqueue_style'] = get_template_directory_uri() . '/' . ltrim( $args['enqueue_style'], '/' );
 		}
 
-		if ( empty( $args['name'] ) ) {
-			throw new \Exception( 'Name was not found in ' . self::class );
-		}
-
-		if ( empty( $args['title'] ) ) {
-			throw new \Exception( 'Title was not found in ' . self::class );
+		if ( empty( $args['enqueue_assets'] ) ) {
+			unset( $args['enqueue_assets'] );
 		}
 
 		static::$args = $args;
