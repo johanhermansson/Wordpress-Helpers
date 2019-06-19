@@ -61,7 +61,7 @@ trait Styles {
 
 		foreach ( $this->get_styles() as $i => $style ) {
 			if ( is_string( $style ) ) {
-				if ( false === strpos( $style, get_stylesheet_directory_uri() ) ) {
+				if ( false === strpos( $style, 'manifest::' ) and false === strpos( $style, get_stylesheet_directory_uri() ) ) {
 					$style = get_stylesheet_directory_uri() . '/' . ltrim( $style, '/' );
 				}
 
@@ -73,6 +73,11 @@ trait Styles {
 			}
 
 			$style = array_replace( $defaults, $style );
+
+			if ( false !== strpos( $style[1], 'manifest::' ) and method_exists( $this, 'get_manifest_asset' ) ) {
+				$key = explode( 'manifest::', $style[1] );
+				$style[1] = $this->get_manifest_asset( end( $key ) );
+			}
 
 			call_user_func_array( 'wp_enqueue_style', $style );
 		}

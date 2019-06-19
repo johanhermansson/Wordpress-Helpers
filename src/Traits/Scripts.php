@@ -61,7 +61,7 @@ trait Scripts {
 
 		foreach ( $this->get_scripts() as $i => $script ) {
 			if ( is_string( $script ) ) {
-				if ( false === strpos( $script, get_stylesheet_directory_uri() ) ) {
+				if ( false === strpos( $style, 'manifest::' ) and false === strpos( $script, get_stylesheet_directory_uri() ) ) {
 					$script = get_stylesheet_directory_uri() . '/' . ltrim( $script, '/' );
 				}
 
@@ -73,6 +73,11 @@ trait Scripts {
 			}
 
 			$script = array_replace( $defaults, $script );
+
+			if ( false !== strpos( $script[1], 'manifest::' ) and method_exists( $this, 'get_manifest_asset' ) ) {
+				$key = explode( 'manifest::', $script[1] );
+				$script[1] = $this->get_manifest_asset( end( $key ) );
+			}
 
 			call_user_func_array( 'wp_enqueue_script', $script );
 		}
