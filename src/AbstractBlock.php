@@ -99,10 +99,11 @@ abstract class AbstractBlock extends Singleton {
 	/**
 	 * Initialize block
 	 * Prepares arguments for acf_register_block_type
+	 * @param array $args
 	 *
 	 * @return instance
 	 */
-	final public function initialize() {
+	final public function initialize( $args = [] ) {
 		if ( static::$initialized ) {
 			return self::instance();
 		}
@@ -122,6 +123,7 @@ abstract class AbstractBlock extends Singleton {
 			'category'        => static::$category,
 			'align'           => static::$align,
 			'mode'            => static::$mode,
+			'enqueue_assets'  => [ &$this, 'enqueue_assets' ],
 			'enqueue_script'  => static::$scripts ?: static::$enqueue_script,
 			'enqueue_style'   => static::$styles ?: static::$enqueue_style,
 			'supports'        => static::$supports,
@@ -231,4 +233,11 @@ abstract class AbstractBlock extends Singleton {
 	 * @return void
 	 */
 	public function render() {}
+
+	/**
+	 * Fallback enqueue assets function
+	 *
+	 * @return void
+	 */
+	public function enqueue_assets() {}
 }
