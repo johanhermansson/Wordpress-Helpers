@@ -1,0 +1,99 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e2fab728bd83d3b640a3bf6299b15b28",
+    "packages": [
+        {
+            "name": "haydenpierce/class-finder",
+            "version": "0.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/hpierce1102/ClassFinder.git",
+                "reference": "a7b3d050304bda998e124f650f3328d0286c8518"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/hpierce1102%2FClassFinder/repository/archive.zip?sha=a7b3d050304bda998e124f650f3328d0286c8518",
+                "reference": "a7b3d050304bda998e124f650f3328d0286c8518",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "4.8.36"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HaydenPierce\\ClassFinder\\": "src/",
+                    "HaydenPierce\\ClassFinder\\UnitTest\\": "test/unit"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hayden Pierce",
+                    "email": "hayden@haydenpierce.com"
+                }
+            ],
+            "description": "A library that can provide of a list of classes in a given namespace",
+            "time": "2019-05-25T17:27:37+00:00"
+        },
+        {
+            "name": "oan/helpers",
+            "version": "v0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johanhermansson/PHP-Helpers.git",
+                "reference": "39c917a75e57bbc8a9dc8a53e89a84ce0422edd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johanhermansson/PHP-Helpers/zipball/39c917a75e57bbc8a9dc8a53e89a84ce0422edd8",
+                "reference": "39c917a75e57bbc8a9dc8a53e89a84ce0422edd8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OAN\\Helpers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Unlicense"
+            ],
+            "authors": [
+                {
+                    "name": "Johan Hermansson",
+                    "email": "johan@johanhermansson.se"
+                }
+            ],
+            "description": "PHP Helpers",
+            "homepage": "https://github.com/johanhermansson/PHP-Helpers",
+            "time": "2019-05-30T08:16:20+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.1"
+    },
+    "platform-dev": []
+}

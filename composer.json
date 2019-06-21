@@ -17,6 +17,7 @@
 	},
 	"require": {
 		"php": ">=7.1",
+		"haydenpierce/class-finder": "^0.3.2",
 		"oan/helpers": "^0.0.3"
 	}
 }

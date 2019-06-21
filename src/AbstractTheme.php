@@ -1,5 +1,6 @@
 <?php namespace OAN\Wordpress;
 
+use HaydenPierce\ClassFinder\ClassFinder;
 use OAN\Helpers\Singleton;
 
 abstract class AbstractTheme extends Singleton {
@@ -44,6 +45,8 @@ abstract class AbstractTheme extends Singleton {
 	 */
 	protected static $filters = [];
 
+	protected static $blocks = [];
+
 	/**
 	 * Intialize theme
 	 *
@@ -55,6 +58,7 @@ abstract class AbstractTheme extends Singleton {
 		}
 
 		$this->hooks_construct();
+		$this->initialize_blocks();
 
 		$this->initialized = true;
 
@@ -88,9 +92,36 @@ abstract class AbstractTheme extends Singleton {
 	 *
 	 * @return string
 	 */
-	final public static function get_version() {
+	public static function get_version() {
 		$theme = wp_get_theme();
 		return $theme->Version ?: get_bloginfo( 'version' );
+	}
+
+	/**
+	 * Initialize blocks based on AbstractBlock
+	 *
+	 * @return void
+	 */
+	public function initialize_blocks() {
+		$blocks = self::$blocks;
+
+		if ( isset( static::$blocks ) ) {
+			if ( is_string( static::$blocks ) ) {
+				if (  ! class_exists( static::$blocks ) ) {
+					$blocks = array_merge( $blocks, ClassFinder::getClassesInNamespace( static::$blocks ) );
+				} else {
+					$blocks = array_merge( $blocks, [ static::$blocks ] );
+				}
+			} else {
+				$blocks = array_merge( $blocks, static::$blocks );
+			}
+		}
+
+		foreach ( $blocks as $block ) {
+			if ( method_exists( $block, 'instance' ) and method_exists( $block, 'initialize' ) ) {
+				$block::instance()->initialize();
+			}
+		}
 	}
 
 }

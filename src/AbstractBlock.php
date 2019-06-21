@@ -29,7 +29,7 @@ abstract class AbstractBlock extends Singleton {
 	/**
 	 * Name for acf_register_block_type
 	 */
-	protected static $name           = '';
+	protected static $name = '';
 
 	/**
 	 * Title for acf_register_block_type
@@ -101,6 +101,8 @@ abstract class AbstractBlock extends Singleton {
 		[ 'acf/init', 'this::register' ],
 	];
 
+	protected $base_class_name = '';
+
 	/**
 	 * Predefined filters
 	 *
@@ -153,7 +155,7 @@ abstract class AbstractBlock extends Singleton {
 		$args = apply_filters( 'oan/blocks/' . $args['name'] . '/args', $args );
 
 		if ( ! empty( $args['base_class'] ) and empty( static::$base_class ) ) {
-			static::$base_class = $args['base_class'];
+			$this->base_class_name = $args['base_class'];
 		}
 
 		if ( ! empty( $args['base_class'] ) ) {
@@ -180,7 +182,7 @@ abstract class AbstractBlock extends Singleton {
 			unset( $args['enqueue_assets'] );
 		}
 
-		static::$args = $args;
+		$this->arguments = $args;
 
 		$this->hooks_construct();
 
@@ -200,7 +202,7 @@ abstract class AbstractBlock extends Singleton {
 			return static::instance();
 		}
 
-		acf_register_block_type( static::$args );
+		acf_register_block_type( $this->arguments );
 
 		$this->registered = true;
 
@@ -223,8 +225,8 @@ abstract class AbstractBlock extends Singleton {
 
 		$classes = [];
 
-		if ( static::$base_class ) {
-			$classes[] = static::$base_class;
+		if ( ! empty( $this->base_class_name ) ) {
+			$classes[] = $this->base_class_name;
 		}
 
 		if ( ! empty( $block['className'] ) ) {
@@ -232,8 +234,8 @@ abstract class AbstractBlock extends Singleton {
 		}
 
 		if ( ! empty( $block['align'] ) ) {
-			if ( static::$base_class ) {
-				$classes[] = static::$base_class . "--align{$block['align']}";
+			if ( ! empty( $this->base_class_name ) ) {
+				$classes[] = $this->base_class_name . "--align{$block['align']}";
 			}
 
 			$classes[] = "align{$block['align']}";
