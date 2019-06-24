@@ -2,9 +2,15 @@
 
 use OAN\Helpers\Callback;
 
+// PHP functions used
+use array_filter, array_keys, count, get_class, is_array, is_callable, is_string;
+
+// Wordpress functions used
+use add_action, add_filter;
+
 trait Hooks {
 
-	public function __construct() {
+	public function hooks_construct() {
 		$this->initialize_hooks( 'filter' );
 		$this->initialize_hooks( 'action' );
 	}
@@ -69,6 +75,8 @@ trait Hooks {
 				continue;
 			}
 
+			// echo '<pre>'; print_r( [ 'hook' => $item['hook'], 'callback' => is_array($item['callback']) ? $item['callback'][1] : $item['callback'] ] ); echo '</pre>';
+
 			$item = array_merge( [
 				'arguments' => 2,
 				'callback'  => '',
@@ -93,19 +101,19 @@ trait Hooks {
 	final public function add_hook( $type = '', $hook = '', $callback, $priority = 10, $arguments = 2 ) {
 		$property = "{$type}s";
 
-		if ( ! isset( static::$$property ) ) {
+		if ( ! isset( $this->{$property} ) ) {
 			return $this;
 		}
 
-		if ( ! is_array( static::$$property ) ) {
-			static::$$property = [];
+		if ( ! is_array( $this->{$property} ) ) {
+			$this->{$property} = [];
 		}
 
 		if ( ! empty( $hook ) and empty( $callback ) ) {
 			// When callback and hook has the same name
-			static::$$property[] = $hook;
+			$this->{$property}[] = $hook;
 		} else if ( ! empty( $hook ) and ! empty( $callback ) ) {
-			static::$$property[] = [
+			$this->{$property}[] = [
 				'arguments' => $arguments,
 				'callback'  => $callback,
 				'hook'      => $hook,
@@ -173,13 +181,7 @@ trait Hooks {
 	 * @return array
 	 */
 	final public function get_actions() {
-		$actions = empty( self::$actions ) ? [] : self::$actions;
-
-		if ( isset( static::$actions ) and static::$actions !== self::$actions ) {
-			$actions = array_merge( $actions, static::$actions );
-		}
-
-		return $actions;
+		return array_merge( (array) $this->pre_actions, (array) $this->actions );
 	}
 
 	/**
@@ -211,13 +213,7 @@ trait Hooks {
 	 * @return array
 	 */
 	final public function get_filters() {
-		$filters = empty( self::$filters ) ? [] : self::$filters;
-
-		if ( isset( static::$filters ) and static::$filters !== self::$filters ) {
-			$filters = array_merge( $filters, static::$filters );
-		}
-
-		return $filters;
+		return array_merge( (array) $this->pre_filters, (array) $this->filters );
 	}
 
 }

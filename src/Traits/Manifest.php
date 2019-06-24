@@ -1,5 +1,11 @@
 <?php namespace OAN\Wordpress\Traits;
 
+// PHP functions used
+use file_get_contents, json_decode, strpos;
+
+// Wordpress functions used
+use apply_filters, get_template_directory;
+
 trait Manifest {
 
 	/**
@@ -7,7 +13,7 @@ trait Manifest {
 	 *
 	 * @var null|array
 	 */
-	protected static $manifest = null;
+	protected $manifest = null;
 
 	/**
 	 * Get dist folder
@@ -29,17 +35,17 @@ trait Manifest {
 	 * @return array
 	 */
 	final public function get_manifest() {
-		if ( null !== self::$manifest ) {
-			return self::$manifest;
+		if ( null !== $this->manifest ) {
+			return $this->manifest;
 		}
 
 		$path     = apply_filters( 'oan/manifest/path', $this->get_dist_folder( true ) . '/manifest.json' );
 		$contents = apply_filters( 'oan/manifest/contents', @file_get_contents( $path ) );
 		$manifest = apply_filters( 'oan/manifest/transform', (array) json_decode( $contents ) );
 
-		self::$manifest = $manifest;
+		$this->manifest = $manifest;
 
-		return self::$manifest;
+		return $this->manifest;
 	}
 
 	/**

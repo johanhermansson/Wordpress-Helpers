@@ -1,5 +1,11 @@
 <?php namespace OAN\Wordpress\Traits;
 
+// PHP functions used
+use array_replace, call_user_func_array, end, explode, func_get_args, is_array, is_string, ltrim, method_exists, strpos;
+
+// Wordpress functions used
+use get_stylesheet_directory_uri, sanitize_title, wp_get_theme;
+
 trait Styles {
 
 	/**
@@ -7,7 +13,7 @@ trait Styles {
 	 *
 	 * @var array
 	 */
-	protected static $styles = [];
+	protected $styles = [];
 
 	/**
 	 * Add single style
@@ -16,7 +22,7 @@ trait Styles {
 	 * @return instance
 	 */
 	final public function add_style( $handle = '', $src = '', $deps = [], $ver = '', $media = 'all' ) {
-		static::$styles[] = func_get_args();
+		$this->styles[] = func_get_args();
 
 		return $this;
 	}
@@ -41,22 +47,16 @@ trait Styles {
 	 * @return array
 	 */
 	final public function get_styles() {
-		$styles = empty( self::$styles ) ? [] : self::$styles;
-
-		if ( ! empty( static::$styles ) and static::$styles !== self::$styles ) {
-			$styles = array_merge( $styles, static::$styles ?: [] );
-		}
-
-		return $styles;
+		return (array) $this->styles;
 	}
 
 	final public function register_styles() {
 		$defaults = [
-			'',                  // Handle
-			'',                  // Source
-			[],                  // Dependencies
-			self::get_version(), // Version
-			'all',               // Media
+			'',                   // Handle
+			'',                   // Source
+			[],                   // Dependencies
+			$this->get_version(), // Version
+			'all',                // Media
 		];
 
 		foreach ( $this->get_styles() as $i => $style ) {

@@ -1,5 +1,11 @@
 <?php namespace OAN\Wordpress\Traits;
 
+// PHP functions used
+use array_merge, is_integer;
+
+// Wordpress functions
+use register_widget, unregister_widget;
+
 trait Widgets {
 
 	/**
@@ -7,7 +13,7 @@ trait Widgets {
 	 *
 	 * @var array
 	 */
-	protected static $widgets = [
+	protected $pre_widgets = [
 		'WP_Nav_Menu_Widget'        => false,
 		'WP_Widget_Calendar'        => false,
 		'WP_Widget_Links'           => false,
@@ -18,6 +24,7 @@ trait Widgets {
 		'WP_Widget_Search'          => false,
 		'WP_Widget_Tag_Cloud'       => false,
 	];
+	protected $widgets = [];
 
 	/**
 	 * Add single widget
@@ -26,7 +33,7 @@ trait Widgets {
 	 * @return instance
 	 */
 	final public function add_widget( $class = '' ) {
-		static::$widgets[ $class ] = true;
+		$this->widgets[ $class ] = true;
 
 		return $this;
 	}
@@ -51,13 +58,7 @@ trait Widgets {
 	 * @return void
 	 */
 	final public function get_widgets() {
-		$widgets = empty( self::$widgets ) ? [] : self::$widgets;
-
-		if ( static::$widgets and static::$widgets !== self::$widgets ) {
-			$widgets = array_merge( $widgets, static::$widgets ?: [] );
-		}
-
-		return $widgets;
+		return array_merge( (array) $this->pre_widgets, (array) $this->widgets );
 	}
 
 	/**

@@ -3,12 +3,15 @@
 use HaydenPierce\ClassFinder\ClassFinder;
 use OAN\Helpers\Singleton;
 
+// PHP functions used
+use array_merge, class_exists, is_string, method_exists;
+
+// Wordpress functions used
+use add_theme_support, get_bloginfo, remove_action, wp_get_theme;
+
 abstract class AbstractTheme extends Singleton {
 
-	use Traits\Hooks {
-		Traits\Hooks::__construct as hooks_construct;
-	}
-
+	use Traits\Hooks;
 	use Traits\Manifest;
 	use Traits\Menus;
 	use Traits\Sidebars;
@@ -28,7 +31,7 @@ abstract class AbstractTheme extends Singleton {
 	 *
 	 * @var array
 	 */
-	protected static $actions = [
+	protected $pre_actions = [
 		'after_setup_theme',
 		[ 'wp', 'this::remove_header_tags' ],
 		[ 'widgets_init', 'this::register_sidebars' ],
@@ -37,15 +40,17 @@ abstract class AbstractTheme extends Singleton {
 		[ 'wp_enqueue_scripts', 'this::register_styles' ],
 		[ 'wp_enqueue_scripts', 'this::register_scripts' ],
 	];
+	protected $actions = [];
 
 	/**
 	 * Filters
 	 *
 	 * @var array
 	 */
-	protected static $filters = [];
+	protected $pre_filters = [];
+	protected $filters = [];
 
-	protected static $blocks = [];
+	protected $blocks = [];
 
 	/**
 	 * Intialize theme
@@ -103,23 +108,23 @@ abstract class AbstractTheme extends Singleton {
 	 * @return void
 	 */
 	public function initialize_blocks() {
-		$blocks = self::$blocks;
+		$blocks = $this->blocks;
 
-		if ( isset( static::$blocks ) ) {
-			if ( is_string( static::$blocks ) ) {
-				if (  ! class_exists( static::$blocks ) ) {
-					$blocks = array_merge( $blocks, ClassFinder::getClassesInNamespace( static::$blocks ) );
+		if ( isset( $blocks ) ) {
+			if ( is_string( $blocks ) ) {
+				if (  ! class_exists( $blocks ) ) {
+					$blocks = array_merge( $blocks, ClassFinder::getClassesInNamespace( $blocks ) );
 				} else {
-					$blocks = array_merge( $blocks, [ static::$blocks ] );
+					$blocks = array_merge( $blocks, [ $blocks ] );
 				}
 			} else {
-				$blocks = array_merge( $blocks, static::$blocks );
+				$blocks = array_merge( $blocks, $blocks );
 			}
 		}
 
 		foreach ( $blocks as $block ) {
 			if ( method_exists( $block, 'instance' ) and method_exists( $block, 'initialize' ) ) {
-				$block::instance()->initialize();
+				$inst = $block::instance()->initialize();
 			}
 		}
 	}

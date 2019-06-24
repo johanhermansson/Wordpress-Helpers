@@ -1,5 +1,8 @@
 <?php namespace OAN\Wordpress\Traits;
 
+// Wordpress functions used
+use register_nav_menu;
+
 trait Menus {
 
 	/**
@@ -7,7 +10,7 @@ trait Menus {
 	 *
 	 * @var array
 	 */
-	protected static $menus = [];
+	protected $menus = [];
 
 	/**
 	 * Add single menu
@@ -17,7 +20,7 @@ trait Menus {
 	 * @return instance
 	 */
 	final public function add_menu( $location = '', $description = '' ) {
-		static::$menus[ $location ] = $description;
+		$this->menus[ $location ] = $description;
 
 		return $this;
 	}
@@ -42,13 +45,7 @@ trait Menus {
 	 * @return array
 	 */
 	final public function get_menus() {
-		$menus = empty( self::$menus ) ? [] : self::$menus;
-
-		if ( static::$menus and static::$menus !== self::$menus ) {
-			$menus = array_merge( $menus, static::$menus ?: [] );
-		}
-
-		return $menus;
+		return (array) $this->menus;
 	}
 
 	/**

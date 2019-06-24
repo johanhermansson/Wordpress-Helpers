@@ -7,7 +7,7 @@ trait Sidebars {
 	 *
 	 * @var array
 	 */
-	protected static $sidebars = [];
+	protected $sidebars = [];
 
 	/**
 	 * Add single sidebar
@@ -17,7 +17,7 @@ trait Sidebars {
 	 * @return instance
 	 */
 	final public function add_sidebar( $id = '', $name ) {
-		static::$sidebars[ $id ] = $name;
+		$this->sidebars[ $id ] = $name;
 
 		return $this;
 	}
@@ -42,13 +42,7 @@ trait Sidebars {
 	 * @return void
 	 */
 	final public function get_sidebars() {
-		$sidebars = empty( self::$sidebars ) ? [] : self::$sidebars;
-
-		if ( static::$sidebars and static::$sidebars !== self::$sidebars ) {
-			$sidebars = array_merge( $sidebars, static::$sidebars ?: [] );
-		}
-
-		return $sidebars;
+		return (array) $this->sidebars;
 	}
 
 	/**

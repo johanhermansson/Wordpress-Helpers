@@ -1,5 +1,11 @@
 <?php namespace OAN\Wordpress\Traits;
 
+// PHP functions used
+use array_replace, call_user_func_array, end, explode, func_get_args, is_array, is_string, ltrim, method_exists, strpos;
+
+// Wordpress functions used
+use get_stylesheet_directory_uri, sanitize_title, wp_get_theme;
+
 trait Scripts {
 
 	/**
@@ -7,7 +13,7 @@ trait Scripts {
 	 *
 	 * @var array
 	 */
-	protected static $scripts = [];
+	protected $scripts = [];
 
 	/**
 	 * Add single script
@@ -16,7 +22,7 @@ trait Scripts {
 	 * @return instance
 	 */
 	final public function add_script( $handle = '', $src = '', $deps = [], $ver = '', $in_footer = true ) {
-		static::$scripts[] = func_get_args();
+		$this->scripts[] = func_get_args();
 
 		return $this;
 	}
@@ -41,22 +47,16 @@ trait Scripts {
 	 * @return array
 	 */
 	final public function get_scripts() {
-		$scripts = empty( self::$scripts ) ? [] : self::$scripts;
-
-		if ( ! empty( static::$scripts ) and static::$scripts !== self::$scripts ) {
-			$scripts = array_merge( $scripts, static::$scripts ?: [] );
-		}
-
-		return $scripts;
+		return (array) $this->scripts;
 	}
 
 	final public function register_scripts() {
 		$defaults = [
-			'',                  // Handle
-			'',                  // Source
-			[],                  // Dependencies
-			self::get_version(), // Version
-			true,                // In footer
+			'',                   // Handle
+			'',                   // Source
+			[],                   // Dependencies
+			$this->get_version(), // Version
+			true,                 // In footer
 		];
 
 		foreach ( $this->get_scripts() as $i => $script ) {
