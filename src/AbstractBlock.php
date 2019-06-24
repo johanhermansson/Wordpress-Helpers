@@ -108,6 +108,7 @@ abstract class AbstractBlock extends Singleton {
 	protected $pre_actions = [
 		[ 'acf/init', 'this::register' ],
 	];
+	protected $actions = [];
 
 	protected $base_class_name = '';
 
@@ -116,6 +117,7 @@ abstract class AbstractBlock extends Singleton {
 	 *
 	 * @var array
 	 */
+	protected $pre_filters = [];
 	protected $filters = [];
 
 	/**
