@@ -37,8 +37,8 @@ abstract class AbstractTheme extends Singleton {
 		[ 'widgets_init', 'this::register_sidebars' ],
 		[ 'widgets_init', 'this::register_widgets' ],
 		[ 'after_setup_theme', 'this::register_menus' ],
-		[ 'wp_enqueue_scripts', 'this::register_styles' ],
-		[ 'wp_enqueue_scripts', 'this::register_scripts' ],
+		[ 'wp_enqueue_scripts', 'this::register_styles', 0 ],
+		[ 'wp_enqueue_scripts', 'this::register_scripts', 0 ],
 	];
 	protected $actions = [];
 
