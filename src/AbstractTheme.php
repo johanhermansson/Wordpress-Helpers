@@ -1,13 +1,20 @@
-<?php namespace OAN\Wordpress;
+<?php
+namespace OAN\Wordpress;
 
-use HaydenPierce\ClassFinder\ClassFinder;
-use OAN\Helpers\Singleton;
+use add_theme_support;
+use array_merge;
 
 // PHP functions used
-use array_merge, class_exists, is_string, method_exists;
+use class_exists;
+use get_bloginfo;
+use HaydenPierce\ClassFinder\ClassFinder;
+use is_string;
 
 // Wordpress functions used
-use add_theme_support, get_bloginfo, remove_action, wp_get_theme;
+use method_exists;
+use OAN\Helpers\Singleton;
+use remove_action;
+use wp_get_theme;
 
 abstract class AbstractTheme extends Singleton {
 
@@ -33,12 +40,12 @@ abstract class AbstractTheme extends Singleton {
 	 */
 	protected $pre_actions = [
 		'after_setup_theme',
-		[ 'wp', 'this::remove_header_tags' ],
-		[ 'widgets_init', 'this::register_sidebars' ],
-		[ 'widgets_init', 'this::register_widgets' ],
-		[ 'after_setup_theme', 'this::register_menus' ],
-		[ 'wp_enqueue_scripts', 'this::register_styles', 0 ],
-		[ 'wp_enqueue_scripts', 'this::register_scripts', 0 ],
+		['wp', 'this::remove_header_tags'],
+		['widgets_init', 'this::register_sidebars'],
+		['widgets_init', 'this::register_widgets'],
+		['after_setup_theme', 'this::register_menus'],
+		['wp_enqueue_scripts', 'this::register_styles', 0],
+		['wp_enqueue_scripts', 'this::register_scripts', 0],
 	];
 	protected $actions = [];
 
@@ -48,7 +55,7 @@ abstract class AbstractTheme extends Singleton {
 	 * @var array
 	 */
 	protected $pre_filters = [];
-	protected $filters = [];
+	protected $filters     = [];
 
 	protected $blocks = [];
 
@@ -112,10 +119,10 @@ abstract class AbstractTheme extends Singleton {
 
 		if ( isset( $blocks ) ) {
 			if ( is_string( $blocks ) ) {
-				if (  ! class_exists( $blocks ) ) {
+				if ( ! class_exists( $blocks ) ) {
 					$blocks = array_merge( $blocks, ClassFinder::getClassesInNamespace( $blocks ) );
 				} else {
-					$blocks = array_merge( $blocks, [ $blocks ] );
+					$blocks = array_merge( $blocks, [$blocks] );
 				}
 			} else {
 				$blocks = array_merge( $blocks, $blocks );

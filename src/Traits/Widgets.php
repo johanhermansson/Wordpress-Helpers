@@ -1,10 +1,13 @@
-<?php namespace OAN\Wordpress\Traits;
+<?php
+namespace OAN\Wordpress\Traits;
 
 // PHP functions used
-use array_merge, is_integer;
+use array_merge;
+use is_integer;
 
 // Wordpress functions
-use register_widget, unregister_widget;
+use register_widget;
+use unregister_widget;
 
 trait Widgets {
 
@@ -33,7 +36,7 @@ trait Widgets {
 	 * @return instance
 	 */
 	final public function add_widget( $class = '' ) {
-		$this->widgets[ $class ] = true;
+		$this->widgets[$class] = true;
 
 		return $this;
 	}
@@ -55,7 +58,7 @@ trait Widgets {
 	/**
 	 * Get widgets
 	 *
-	 * @return void
+	 * @return array
 	 */
 	final public function get_widgets() {
 		return array_merge( (array) $this->pre_widgets, (array) $this->widgets );
@@ -71,8 +74,8 @@ trait Widgets {
 
 		foreach ( $widgets as $key => $value ) {
 			if ( is_integer( $key ) ) {
-				$widgets[ $value ] = true;
-				unset( $widgets[ $key ] );
+				$widgets[$value] = true;
+				unset( $widgets[$key] );
 			}
 		}
 

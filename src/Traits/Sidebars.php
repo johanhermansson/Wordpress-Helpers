@@ -1,4 +1,5 @@
-<?php namespace OAN\Wordpress\Traits;
+<?php
+namespace OAN\Wordpress\Traits;
 
 trait Sidebars {
 
@@ -16,8 +17,8 @@ trait Sidebars {
 	 * @param string|array $name Label or array with args
 	 * @return instance
 	 */
-	final public function add_sidebar( $id = '', $name ) {
-		$this->sidebars[ $id ] = $name;
+	final public function add_sidebar( $id = '', $name = '' ) {
+		$this->sidebars[$id] = $name;
 
 		return $this;
 	}
@@ -39,7 +40,7 @@ trait Sidebars {
 	/**
 	 * Get sidebars
 	 *
-	 * @return void
+	 * @return array
 	 */
 	final public function get_sidebars() {
 		return (array) $this->sidebars;

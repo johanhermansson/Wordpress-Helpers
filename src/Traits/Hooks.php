@@ -1,12 +1,20 @@
-<?php namespace OAN\Wordpress\Traits;
+<?php
+namespace OAN\Wordpress\Traits;
 
-use OAN\Helpers\Callback;
+use add_action;
 
 // PHP functions used
-use array_filter, array_keys, count, get_class, is_array, is_callable, is_string;
+use add_filter;
+use array_filter;
+use array_keys;
+use count;
+use get_class;
+use is_array;
+use is_callable;
 
 // Wordpress functions used
-use add_action, add_filter;
+use is_string;
+use OAN\Helpers\Callback;
 
 trait Hooks {
 
@@ -34,7 +42,7 @@ trait Hooks {
 		}
 
 		foreach ( $hooks as $item ) {
-			if ( is_array( $item ) and count( array_filter( array_keys( $item ), 'is_string') ) > 0 ) {
+			if ( is_array( $item ) and count( array_filter( array_keys( $item ), 'is_string' ) ) > 0 ) {
 				$item['callback'] = Callback::get( $item['callback'], $instance );
 
 				if ( ! $item['callback'] ) {
@@ -53,14 +61,14 @@ trait Hooks {
 					'hook'     => $hook,
 				];
 			} else if ( is_string( $item ) ) {
-				if ( is_callable( [ &$this, $item ], true ) ) {
+				if ( is_callable( [ & $this, $item], true ) ) {
 					$item = [
-						'callback' => [ &$this, $item ],
+						'callback' => [ & $this, $item],
 						'hook'     => $item,
 					];
-				} else if ( is_callable( [ get_class( $this ), $item ], true ) ) {
+				} else if ( is_callable( [get_class( $this ), $item], true ) ) {
 					$item = [
-						'callback' => [ get_class( $this ), $item ],
+						'callback' => [get_class( $this ), $item],
 						'hook'     => $item,
 					];
 				} else if ( is_callable( $item, true ) ) {
@@ -81,7 +89,7 @@ trait Hooks {
 				'arguments' => 2,
 				'callback'  => '',
 				'hook'      => '',
-				'priority'   => 10,
+				'priority'  => 10,
 			], $item );
 
 			$setter( $item['hook'], $item['callback'], $item['priority'], $item['arguments'] );
@@ -98,7 +106,7 @@ trait Hooks {
 	 * @param integer $arguments
 	 * @return instance
 	 */
-	final public function add_hook( $type = '', $hook = '', $callback, $priority = 10, $arguments = 2 ) {
+	final public function add_hook( $type = '', $hook = '', $callback = null, $priority = 10, $arguments = 2 ) {
 		$property = "{$type}s";
 
 		if ( ! isset( $this->{$property} ) ) {
@@ -193,7 +201,7 @@ trait Hooks {
 	 * @param integer $arguments
 	 * @return instance
 	 */
-	final public function add_filter( $hook = '', $callback, $priority = 10, $arguments = 2 ) {
+	final public function add_filter( $hook = '', $callback = null, $priority = 10, $arguments = 2 ) {
 		return $this->add_hook( 'filter', $hook, $callback, $priority, $arguments );
 	}
 

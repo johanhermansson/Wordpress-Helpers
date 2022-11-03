@@ -1,10 +1,14 @@
-<?php namespace OAN\Wordpress\Traits;
+<?php
+namespace OAN\Wordpress\Traits;
 
 // PHP functions used
-use file_get_contents, json_decode, strpos;
+use apply_filters;
+use file_get_contents;
+use get_template_directory;
 
 // Wordpress functions used
-use apply_filters, get_template_directory;
+use json_decode;
+use strpos;
 
 trait Manifest {
 
@@ -70,8 +74,8 @@ trait Manifest {
 						break;
 					}
 				}
-			} else if ( isset( $manifest[ $asset ] ) ) {
-				$asset = $manifest[ $asset ];
+			} else if ( isset( $manifest[$asset] ) ) {
+				$asset = $manifest[$asset];
 			}
 		}
 

@@ -1,10 +1,22 @@
-<?php namespace OAN\Wordpress\Traits;
+<?php
+namespace OAN\Wordpress\Traits;
 
 // PHP functions used
-use array_replace, call_user_func_array, end, explode, func_get_args, is_array, is_string, ltrim, method_exists, strpos;
+use array_replace;
+use call_user_func_array;
+use end;
+use explode;
+use func_get_args;
+use get_stylesheet_directory_uri;
+use is_array;
+use is_string;
+use ltrim;
+use method_exists;
 
 // Wordpress functions used
-use get_stylesheet_directory_uri, sanitize_title, wp_get_theme;
+use sanitize_title;
+use strpos;
+use wp_get_theme;
 
 trait Styles {
 
@@ -35,7 +47,7 @@ trait Styles {
 	 */
 	final public function add_styles( $styles = [] ) {
 		foreach ( $styles as $style ) {
-			call_user_func_array( [ $this, 'add_style' ], $style );
+			call_user_func_array( [$this, 'add_style'], $style );
 		}
 
 		return $this;
@@ -52,11 +64,11 @@ trait Styles {
 
 	final public function register_styles() {
 		$defaults = [
-			'',                   // Handle
-			'',                   // Source
-			[],                   // Dependencies
+			'', // Handle
+			'', // Source
+			[], // Dependencies
 			$this->get_version(), // Version
-			'all',                // Media
+			'all', // Media
 		];
 
 		foreach ( $this->get_styles() as $i => $style ) {
@@ -65,7 +77,7 @@ trait Styles {
 					$style = get_stylesheet_directory_uri() . '/' . ltrim( $style, '/' );
 				}
 
-				$style = [ sanitize_title( ( wp_get_theme() )->Name ) . '-style-' . ( $i + 1 ), $style ];
+				$style = [sanitize_title(  ( wp_get_theme() )->Name ) . '-style-' . ( $i + 1 ), $style];
 			}
 
 			if ( ! $style or ! is_array( $style ) or empty( $style[1] ) ) {
@@ -75,7 +87,7 @@ trait Styles {
 			$style = array_replace( $defaults, $style );
 
 			if ( false !== strpos( $style[1], 'manifest::' ) and method_exists( $this, 'get_manifest_asset' ) ) {
-				$key = explode( 'manifest::', $style[1] );
+				$key      = explode( 'manifest::', $style[1] );
 				$style[1] = $this->get_manifest_asset( end( $key ) );
 			}
 

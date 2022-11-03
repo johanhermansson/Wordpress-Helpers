@@ -1,16 +1,22 @@
-<?php namespace OAN\Wordpress;
+<?php
+namespace OAN\Wordpress;
 
-use Exception;
-use OAN\Helpers\Singleton;
+use acf_register_block_type;
+use apply_filters;
 
 // PHP functions used
-use array_merge, implode, is_array, ltrim, preg_match;
+use array_merge;
+use Exception;
+use get_template_directory_uri;
+use implode;
+use is_array;
 
 // Wordpress functions used
-use apply_filters, get_template_directory_uri;
+use ltrim;
+use OAN\Helpers\Singleton;
 
 // ACF functions used
-use acf_register_block_type;
+use preg_match;
 
 abstract class AbstractBlock extends Singleton {
 
@@ -54,7 +60,6 @@ abstract class AbstractBlock extends Singleton {
 	 */
 	protected $category = 'common';
 
-
 	/**
 	 * Align for acf_register_block_type
 	 */
@@ -76,15 +81,14 @@ abstract class AbstractBlock extends Singleton {
 	protected $styles = [];
 
 /**
-	 * Enqueue assets for acf_register_block_type
-	 */
+ * Enqueue assets for acf_register_block_type
+ */
 	protected $enqueue_assets = null;
 
 	/**
 	 * Enqueue style for acf_register_block_type
 	 */
 	protected $enqueue_script = null;
-
 
 	/**
 	 * Enqueue script for acf_register_block_type
@@ -94,7 +98,7 @@ abstract class AbstractBlock extends Singleton {
 	/**
 	 * Supports for acf_register_block_type
 	 */
-	protected $supports = [ 'align' => false ];
+	protected $supports = ['align' => false];
 
 	/**
 	 * Base class name
@@ -106,7 +110,7 @@ abstract class AbstractBlock extends Singleton {
 	 * Prefrefined actions
 	 */
 	protected $pre_actions = [
-		[ 'acf/init', 'this::register' ],
+		['acf/init', 'this::register'],
 	];
 	protected $actions = [];
 
@@ -118,7 +122,7 @@ abstract class AbstractBlock extends Singleton {
 	 * @var array
 	 */
 	protected $pre_filters = [];
-	protected $filters = [];
+	protected $filters     = [];
 
 	/**
 	 * Initialize block
@@ -151,7 +155,7 @@ abstract class AbstractBlock extends Singleton {
 			'enqueue_script'  => $this->enqueue_script,
 			'enqueue_style'   => $this->enqueue_style,
 			'supports'        => $this->supports,
-			'render_callback' => [ &$this, 'render' ],
+			'render_callback' => [ & $this, 'render'],
 		], $this->args, $args );
 
 		if ( empty( $args['name'] ) ) {

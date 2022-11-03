@@ -1,4 +1,5 @@
-<?php namespace OAN\Wordpress\Traits;
+<?php
+namespace OAN\Wordpress\Traits;
 
 // Wordpress functions used
 use register_nav_menu;
@@ -20,7 +21,7 @@ trait Menus {
 	 * @return instance
 	 */
 	final public function add_menu( $location = '', $description = '' ) {
-		$this->menus[ $location ] = $description;
+		$this->menus[$location] = $description;
 
 		return $this;
 	}
